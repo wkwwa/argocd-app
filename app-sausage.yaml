@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sausage-store-argo-cd
+spec:
+  destination:
+    name: ""
+    namespace: std-ext-006-10
+    server: "https://kubernetes.default.svc"
+  source:
+    path: ""
+    repoURL: >-
+      https://nexus.praktikum-services.tech/repository/sausage-store-std-ext-006-10/
+    targetRevision: 0.1.0
+    chart: sausage-store-chart
+  sources: []
+  project: std-ext-006-10
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false

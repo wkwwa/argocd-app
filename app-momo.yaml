@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: momo-store-argo-cd
+spec:
+  destination:
+    name: ""
+    namespace: std-ext-006-10
+    server: "https://kubernetes.default.svc"
+  source:
+    path: ""
+    repoURL: >-
+      https://nexus.praktikum-services.tech/repository/momo-store-std-ext-006-10/
+    targetRevision: 0.1.0
+    chart: momo-store-chart
+  sources: []
+  project: std-ext-006-10
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
