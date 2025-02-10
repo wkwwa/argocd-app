@@ -1,27 +1,32 @@
 stages:
   - build
-  - deploy
+
+publish:
+  stage: publish
+  image: alpine/helm:latest
+  variables:
+    CHART_VERSION: 0.1.0 # Замените на вашу версию
+  script:
+    - helm package . --version $CHART_VERSION --app-version $CHART_VERSION
+    - helm repo add my-repo $CI_PROJECT_URL/packages/helm
+    - helm repo update
+    - helm push my-chart-$CHART_VERSION.tgz my-repo
+  only:
+    - main # Запускаем пайплайн только для ветки main
 
 build-helm-chart:
   image: alpine/helm:3
   stage: build
+  trigger:
+    project: DevOps/Store CI
+    strategy: depend
   script: 
-    - helm package ./momo-store-chart
+  
+    - helm package . --version $CHART_VERSION --app-version $CHART_VERSION
     - cd /builds/std-ext-006-10/momo-store-infrastructure/
     - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} https://nexus.praktikum-services.tech/repository/momo-store-std-ext-006-10/ --upload-file momo-store-chart-0.1.0.tgz
-
-deploy-helm-chart:
-  stage: deploy
-  image: alpine/helm:3
-  environment:
-    name: test
-  script:
-    - mkdir -p ~/.kube
-    - KUBECONFIG=${CONFIG}
-    - echo $CONFIG | base64 -d > ~/.kube/config 
-    - chmod 600 ~/.kube/config
-    - helm repo add momo-store-std-ext-006-10 ${NEXUS_HELM_REPO} --username ${NEXUS_REPO_USER} --password ${NEXUS_REPO_PASS}
-    - helm repo update
-    - helm repo list
-    - helm upgrade --install momo-store-chart --namespace default momo-store-std-ext-006-10/momo-store-chart --version 0.1.0 --atomic --timeout 15m
-    - rm -f ~/.kube/config
+  only:
+    - main
+  trigger:
+    project: <group>/<repository-b>
+    strategy: depend
