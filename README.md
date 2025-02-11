@@ -1,6 +1,6 @@
 ## demo app - developing with k8s and ArgoCD
 
-Demo includes building a pipeline of dynamically updating & building a new application version using GitLab [downstream pipeline](https://github.com/wkwwa/store-ci) feature, which then triggers ArgoCD to automatically pull the K8s manifest changes made by GitLab CI pipeline and released [Helm charts to Nexus repository](argocd-app/.gitlab-ci.yml).
+Demo includes building a pipeline of dynamically updating & building a new application version using GitLab [downstream pipeline](https://github.com/wkwwa/store-ci) feature, which then triggers ArgoCD to automatically pull the K8s manifest changes made by GitLab CI pipeline and released [Helm charts to Nexus repository](https://github.com/wkwwa/argocd-app/blob/main/.gitlab-ci.yml).
 
 This stage shows a full application build-delivery cycle, using GitOps practices.
 
