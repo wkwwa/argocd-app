@@ -4,7 +4,7 @@ Demo includes building a pipeline of dynamically updating & building a new appli
 
 This stage shows a full application build-delivery cycle, using GitOps practices.
 
-<img width="500" alt="image" src="">
+<img width="500" alt="image" src="https://github.com/wkwwa/argocd-app/blob/main/assets/chapter9_lesson22_picture10_1650399955.png">
 
 Step 1. Add your repository to ArgoCD. 
 
