@@ -1,32 +1,10 @@
 stages:
-  - build
-
-publish:
-  stage: publish
-  image: alpine/helm:latest
-  variables:
-    CHART_VERSION: 0.1.0 # Замените на вашу версию
-  script:
-    - helm package . --version $CHART_VERSION --app-version $CHART_VERSION
-    - helm repo add my-repo $CI_PROJECT_URL/packages/helm
-    - helm repo update
-    - helm push my-chart-$CHART_VERSION.tgz my-repo
-  only:
-    - main # Запускаем пайплайн только для ветки main
+  - publish
 
 build-helm-chart:
   image: alpine/helm:3
-  stage: build
-  trigger:
-    project: DevOps/Store CI
-    strategy: depend
-  script: 
-  
-    - helm package . --version $CHART_VERSION --app-version $CHART_VERSION
-    - cd /builds/std-ext-006-10/momo-store-infrastructure/
+  stage: publish
+  script:
+    - helm package ./momo-store-chart
+    - cd /builds/std-ext-006-10/argocd-app/
     - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} https://nexus.praktikum-services.tech/repository/momo-store-std-ext-006-10/ --upload-file momo-store-chart-0.1.0.tgz
-  only:
-    - main
-  trigger:
-    project: <group>/<repository-b>
-    strategy: depend
